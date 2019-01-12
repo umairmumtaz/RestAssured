@@ -7,13 +7,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import static io.restassured.RestAssured.*;
 import org.testng.annotations.TestInstance;
-
+import static org.hamcrest.Matchers.comparesEqualTo;
 
 public class Test1_GetService {
+    int statusCode =200;
 
     @Test
     public void testResponseCode1(){
-        int statusCode =201;
         String cityName = "London";
         given().
         when().
@@ -35,17 +35,20 @@ public class Test1_GetService {
     }
 
 
-    @Test(dependsOnMethods = "testResponseCode2")
+    @Test
     public void testgetTC3(){
         baseURI="https://samples.openweathermap.org";
         given(). // header, param, cookies, body
-                param("location","-38.383494,33.427362").
+                param("q","London,uk").
+                param("appid","b6907d289e10d714a6e88b30761fae22").
         when().// get(resource), post(resource)
-
-
+                get("/data/2.5/weather").
         then().// assertions
+                assertThat().statusCode(statusCode).and().contentType(ContentType.JSON).and().
+                body("weather[0].main",comparesEqualTo("Drizzle") ).and().
+                body("name",comparesEqualTo("London"));
 
-        extract().// pulling response body
+      //  extract().// pulling response body
 
         System.out.println("testResponseCode3");
     }
