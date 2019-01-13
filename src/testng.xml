@@ -1,7 +1,8 @@
 <suite name="Regression">
     <test name="Restfull">
            <classes>
-            <class name="TestCases.Test1_GetService" />
+               <class name="TestCases.Test_GetRequest" />
+               <class name="TestCases.Test_PostRequest" />
         </classes>
     </test>
 </suite>
