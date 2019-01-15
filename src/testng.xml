@@ -1,8 +1,8 @@
 <suite name="Regression">
     <test name="Restfull">
            <classes>
-               <class name="TestCases.Test_GetRequest" />
-               <class name="TestCases.Test_PostRequest" />
+               <class name="TestAPI_GoogleMaps.Test_GetRequest" />
+               <class name="TestAPI_GoogleMaps.Test_PostRequest" />
         </classes>
     </test>
 </suite>
