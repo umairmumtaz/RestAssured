@@ -26,7 +26,6 @@ public class PayLoads {
 
   }
    static public String getStrBody2() {
-      // return strBody2;
        return("{\n" +
                "    \"place_id\":\"" + placeID + "\" \n" +
                "}\n");

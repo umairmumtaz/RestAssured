@@ -18,6 +18,7 @@ public class Test_PostRequest {
     int statusCode =200;
     Response response;
     String placeID;
+    String cityName = "London";
 
 
     @Test
@@ -44,7 +45,7 @@ public class Test_PostRequest {
 
     @Test(dependsOnMethods = "testPostTC1")
     public void testPostTC2(){ //delete above post
-
+        RestAssured.baseURI = "http://216.10.245.166";
         given(). // header, param, cookies, body
                 queryParam("key","qaclick123").
                 body(PayLoads.getStrBody2()).
@@ -57,6 +58,20 @@ public class Test_PostRequest {
         System.out.println(placeID);
     }
 
-
-
+    @Test
+    public void testGetTC1() {
+        baseURI = "https://samples.openweathermap.org";
+        given(). // header, param, cookies, body
+                param("q", "London,uk").
+                param("appid", "b6907d289e10d714a6e88b30761fae22").
+                when().// get(resource), post(resource)
+                get(Resource.getGetResource1()).
+                then().// assertions
+                assertThat().statusCode(statusCode).and().contentType(ContentType.JSON).and().
+                body("weather[0].main", comparesEqualTo("Drizzle")).and().
+                body("name", comparesEqualTo(cityName)).and().
+                header("server", "openresty/1.9.7.1");
+        //  extract().// pulling response body
+        System.out.println("testgetTC1");
+    }
 }
