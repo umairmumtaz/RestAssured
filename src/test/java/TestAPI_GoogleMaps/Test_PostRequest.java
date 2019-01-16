@@ -1,14 +1,13 @@
 package TestAPI_GoogleMaps;
 import API_GoogleMaps.PayLoads;
 import API_GoogleMaps.Resource;
-import FileReaders.ConfigFileReader;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
+import Utilities.Reader;
+import io.restassured.path.json.JsonPath;
 
-import java.security.Key;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.comparesEqualTo;
@@ -35,13 +34,12 @@ public class Test_PostRequest {
                 body("scope",comparesEqualTo("APP") ).
         extract().response();// pulling response body
 
-
-        JsonPath jsonPathEvaluator = response.jsonPath();
-        placeID=jsonPathEvaluator.get("place_id");
-        PayLoads.setPlaceID(placeID);
+        String placeID = Reader.rawToJson(response).get("place_id"); //fetching the value of "place_ID" from Json
+        PayLoads.setPlaceID(placeID); // setting the value of PlaceID to it can be used in testPostTC2() /subsequent TC.
         System.out.println(placeID);
 
     }
+
 
     @Test(dependsOnMethods = "testPostTC1")
     public void testPostTC2(){ //delete above post
@@ -64,14 +62,13 @@ public class Test_PostRequest {
         given(). // header, param, cookies, body
                 param("q", "London,uk").
                 param("appid", "b6907d289e10d714a6e88b30761fae22").
-                when().// get(resource), post(resource)
+        when().// get(resource), post(resource)
                 get(Resource.getGetResource1()).
-                then().// assertions
+        then().// assertions
                 assertThat().statusCode(statusCode).and().contentType(ContentType.JSON).and().
                 body("weather[0].main", comparesEqualTo("Drizzle")).and().
                 body("name", comparesEqualTo(cityName)).and().
                 header("server", "openresty/1.9.7.1");
-        //  extract().// pulling response body
         System.out.println("testgetTC1");
     }
 }
